@@ -1,8 +1,8 @@
 package com.cucuruchi.banitem;
 
 import com.cucuruchi.banitem.command.AdminCommand;
-import com.cucuruchi.banitem.inventory.BanItemSettingInventory;
 import com.cucuruchi.banitem.inventory.BanitemInventory;
+import com.cucuruchi.banitem.inventory.BanitemSettingInventory;
 import com.cucuruchi.banitem.listener.BanItemInventoryListner;
 import com.cucuruchi.banitem.listener.BanItemSettingInventoryListener;
 import com.cucuruchi.harvillibrary.extension.ConfigExtension;
@@ -21,10 +21,8 @@ public final class banitem extends JavaPlugin {
         List<String> banItems = config.getStringList("banitems");
         List<String> exceptPlayers = config.getStringList("except-players");
 
-        BanitemInventory banitemInventory = new BanitemInventory(banItems);
-        BanItemSettingInventory banItemSettingInventory = new BanItemSettingInventory(banItems);
 
-        registerCommand("금지아이템", new AdminCommand(config, banItemApply, banItems, exceptPlayers, banitemInventory, banItemSettingInventory));
+        registerCommand("금지아이템", new AdminCommand(config, banItemApply, banItems, exceptPlayers));
         getServer().getPluginManager().registerEvents(new BanItemInventoryListner(), this);
         getServer().getPluginManager().registerEvents(new BanItemSettingInventoryListener(config, banItems), this);
     }

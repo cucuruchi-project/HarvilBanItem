@@ -9,22 +9,20 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class BanitemInventory implements InventoryHolder {
+public class BanitemSettingInventory implements InventoryHolder {
 
-    private List<String> banitems;
+    private final List<String> banitems;
     private final Inventory inventory;
-
-    public BanitemInventory(List<String> banitems) {
+    public BanitemSettingInventory(List<String> banitems) {
         this.banitems = banitems;
-        this.inventory = Bukkit.createInventory(this, 54, "BANITEM-LIST");
-        if (!this.banitems.isEmpty()){
+        this.inventory = Bukkit.createInventory(this, 54, "BANITEM-LIST-SETTING");
+        if (!banitems.isEmpty()){
             try {
-                banitems.forEach(item -> inventory.setItem(this.banitems.indexOf(item), new ItemStack(Material.getMaterial(item))));
+                banitems.forEach(item -> this.inventory.setItem(this.banitems.indexOf(item), new ItemStack(Material.getMaterial(item))));
             } catch (NullPointerException e){
                 Bukkit.getLogger().warning(e.getMessage());
             }
         }
-
     }
 
     @Override

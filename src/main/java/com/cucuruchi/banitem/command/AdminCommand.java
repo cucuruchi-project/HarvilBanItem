@@ -1,9 +1,10 @@
 package com.cucuruchi.banitem.command;
 
-import com.cucuruchi.banitem.inventory.BanItemSettingInventory;
 import com.cucuruchi.banitem.inventory.BanitemInventory;
+import com.cucuruchi.banitem.inventory.BanitemSettingInventory;
 import com.cucuruchi.banitem.message.HelpMessage;
 import com.cucuruchi.harvillibrary.extension.ConfigExtension;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.cucuruchi.harvillibrary.extension.MessageExtension.sendMessage;
@@ -22,15 +24,12 @@ public class AdminCommand implements CommandExecutor, TabExecutor {
     private Boolean banItemApply;
     private List<String> banItems;
     private List<String> exceptPlayers;
-    private final BanitemInventory banitemInventory;
-    private final BanItemSettingInventory banItemSettingInventory;
-    public AdminCommand(ConfigExtension config, Boolean banItemApply, List<String> banItems, List<String> exceptPlayers, BanitemInventory banitemInventory, BanItemSettingInventory banItemSettingInventory) {
+
+    public AdminCommand(ConfigExtension config, Boolean banItemApply, List<String> banItems, List<String> exceptPlayers) {
         this.config = config;
         this.banItemApply = banItemApply;
         this.banItems = banItems;
         this.exceptPlayers = exceptPlayers;
-        this.banitemInventory = banitemInventory;
-        this.banItemSettingInventory = banItemSettingInventory;
     }
 
     @Override
@@ -48,10 +47,12 @@ public class AdminCommand implements CommandExecutor, TabExecutor {
 
         switch (args[0]){
             case "설정":
-                banItemSettingInventory.create(player);
+                BanitemSettingInventory banItemSettingInventory = new BanitemSettingInventory(banItems);
+                player.openInventory(banItemSettingInventory.getInventory());
                 break;
             case "확인":
-                banitemInventory.create(player);
+                BanitemInventory banitemInventory = new BanitemInventory(banItems);
+                player.openInventory(banitemInventory.getInventory());
                 break;
             case "리로드":
                 config.reload();
@@ -88,6 +89,11 @@ public class AdminCommand implements CommandExecutor, TabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        return null;
+        return switch (args[0]){
+            case "" -> List.of("설정", "확인", "리로드", "플레이어추가", "플레이어제거", "플레이어목록", "도움말");
+            case "플레이어추가" -> List.of(Bukkit.getOnlinePlayers().stream().map(Player::getName).toArray(String[]::new));
+            case "플레이어제거" -> exceptPlayers;
+            default -> Collections.emptyList();
+        };
     }
 }

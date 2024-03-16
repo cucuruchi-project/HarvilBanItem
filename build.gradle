@@ -48,3 +48,12 @@ processResources {
         expand props
     }
 }
+
+jar {
+    destinationDirectory = new File (
+            "C:/Users/GH/Desktop/test/plugins",
+    )
+    manifest {
+        attributes 'Main-Class' : 'com.cucuruchi.banitem.banitem'
+    }
+}
