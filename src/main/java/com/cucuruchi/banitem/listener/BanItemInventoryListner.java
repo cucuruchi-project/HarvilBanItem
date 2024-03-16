@@ -15,7 +15,7 @@ public class BanItemInventoryListner implements Listener {
     @EventHandler
     public void InventoryClickEvent(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
-        Inventory inv = event.getClickedInventory();
+        Inventory inv = event.getInventory();
         if (inv == null || !(inv.getHolder() instanceof BanitemInventory)){
             return;
         }

@@ -2,6 +2,7 @@ package com.cucuruchi.banitem.command;
 
 import com.cucuruchi.banitem.inventory.BanitemInventory;
 import com.cucuruchi.banitem.inventory.BanitemSettingInventory;
+import com.cucuruchi.banitem.inventory.ExceptPlayerInventory;
 import com.cucuruchi.banitem.message.HelpMessage;
 import com.cucuruchi.harvillibrary.extension.ConfigExtension;
 import org.bukkit.Bukkit;
@@ -21,13 +22,11 @@ import static com.cucuruchi.harvillibrary.extension.MessageExtension.sendMessage
 
 public class AdminCommand implements CommandExecutor, TabExecutor {
     private final ConfigExtension config;
-    private Boolean banItemApply;
     private List<String> banItems;
     private List<String> exceptPlayers;
 
-    public AdminCommand(ConfigExtension config, Boolean banItemApply, List<String> banItems, List<String> exceptPlayers) {
+    public AdminCommand(ConfigExtension config, List<String> banItems, List<String> exceptPlayers) {
         this.config = config;
-        this.banItemApply = banItemApply;
         this.banItems = banItems;
         this.exceptPlayers = exceptPlayers;
     }
@@ -77,8 +76,8 @@ public class AdminCommand implements CommandExecutor, TabExecutor {
                 sendMessage(player, "&c" + args[1] + "님을 예외 플레이어에서 제거하였습니다.");
                 break;
             case "플레이어목록":
-                sendMessage(player,"제외 플레이어 목록");
-                exceptPlayers.forEach(playerName -> sendMessage(player, "플레이어 이름 : " + playerName + "\n"));
+                ExceptPlayerInventory exceptPlayerInventory = new ExceptPlayerInventory(exceptPlayers);
+                player.openInventory(exceptPlayerInventory.getInventory());
                 break;
             case "도움말":
                 HelpMessage.send(player);

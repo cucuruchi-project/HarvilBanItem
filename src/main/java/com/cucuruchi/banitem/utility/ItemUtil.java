@@ -1,21 +1,19 @@
 package com.cucuruchi.banitem.utility;
 
+import com.cucuruchi.harvillibrary.extension.StringExtension;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.Arrays;
+import org.bukkit.inventory.meta.SkullMeta;
 
 public class ItemUtil {
 
-    public ItemStack create(Material material, Integer amount, String name, Integer customModelData, String... lore){
-        ItemStack itemStack = new ItemStack(material, amount);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(name);
-        itemMeta.setCustomModelData(customModelData);
-        itemMeta.setLore(Arrays.asList(lore));
-        itemStack.setItemMeta(itemMeta);
-
+    public static ItemStack createPlayerHead(String player){
+        ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+        skullMeta.setDisplayName(StringExtension.transChatColor("&a" + player));
+        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(player));
+        itemStack.setItemMeta(skullMeta);
         return itemStack;
     }
 }

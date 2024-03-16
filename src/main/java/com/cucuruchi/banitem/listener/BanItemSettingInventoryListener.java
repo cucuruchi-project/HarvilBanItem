@@ -30,14 +30,15 @@ public class BanItemSettingInventoryListener implements Listener {
         if (inv == null || !(inv.getHolder() instanceof BanitemSettingInventory banitemSettingInventory)){
             return;
         }
+        banItems.clear();
         ItemStack[] itemType = banitemSettingInventory.getInventory().getContents();
-        for (ItemStack itemStack : itemType) {
-            if (itemStack != null && !(itemStack.getType().isAir())){
-                banItems.clear();
-                banItems.add(String.valueOf(itemStack.getType()));
+        for (int i = 0; i < banitemSettingInventory.getInventory().getSize(); i++) {
+            if (itemType[i] != null){
+                banItems.add(String.valueOf(itemType[i].getType()));
             }
         }
         config.set("banitems", banItems.toArray());
+        config.save();
         sendMessage(player, "밴 아이템 설정 완료");
     }
 }
