@@ -1,0 +1,8 @@
+name: HarvilBanItem
+version: '${version}'
+main: com.cucuruchi.banitem.banitem
+api-version: '1.20'
+
+commands:
+  금지아이템:
+    permission: Banitem.Admin
